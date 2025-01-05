@@ -1,0 +1,54 @@
+@page
+@model WebApp.Pages.Tasks.Create
+@{
+    ViewData["Title"] = "Create a task";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+
+    @if (Model.errorMessage != "")
+    {
+        <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+            <strong>@Model.errorMessage</strong>
+            <button type='button' class='btn-close' data-bs-dismiss='alert'>Close</button>
+        </div>
+    }
+
+    <form method="POST">
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Task body</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="body" placeholder="Do something">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Task description</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="description" placeholder="Do something in details">
+            </div>
+        </div>
+
+        @if (Model.successMessage != "")
+        {
+            <div class="row mb-3">
+                <div class="col-sm-9">
+                    <div class='alert alert-success alert-dismissible fade show' role='alert'>
+                        <strong>@Model.successMessage</strong>
+                        <button type='button' class='btn-close' data-bs-dismiss='alert'>Ok</button>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="row mb-3">
+            <div class="offset-sm-3 col-sm-3 d-grid">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            <div class="col-sm-3 d-grid">
+                <a class="btn btn-outline-primary" href="/Tasks" role="button">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

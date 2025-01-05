@@ -1,0 +1,29 @@
+@page
+@using WebApp.Data;
+@using WebApp.Models;
+@{
+    ViewData["Title"] = "Delete";
+}
+
+@{
+    try
+    {
+        ProgramContext context = new ProgramContext();
+        int.TryParse(Request.Query["id"], out int id);
+
+        var task = from t in context.Tasks
+                   where t.Id == id
+                   select t;
+        foreach (var t in task)
+        {
+            context.Remove(t);
+        }
+        context.SaveChanges();
+    }
+    catch
+    {
+
+    }
+
+    Response.Redirect("/Tasks/Index");
+}
