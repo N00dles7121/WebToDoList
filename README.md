@@ -1,2 +1,8 @@
-This is my first WebApp. 
-Simple ToDoList using MicrosoftEF Core and a bit of html, css
+# This is my first WebApp. 
+Technologies used:
+- MicrosoftEF Core
+- SqlServer
+- .NET MVC
+- Razor Pages
+- HTML
+- CSS
