@@ -35,7 +35,8 @@ namespace WebApp.Pages.Tasks
             TaskToDo newTask = new TaskToDo()
             {
                 Body = Request.Form["body"],
-                Description = Request.Form["description"]
+                Description = Request.Form["description"],
+                CreatedOn = DateTime.UtcNow
             };
 
             if (newTask.Body.Length == 0 || newTask.Body == null)
