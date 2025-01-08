@@ -24,8 +24,8 @@
                 <label for="@item.taskId" class="IndexLabel">
                     <h3 class="TaskBody">@item.taskBody</h3>
                     <div class="TaskButtons">
-                        <a class="btn btn-primary btn-sm" id="task" href="/Tasks/Edit?id=@item.taskId">Edit</a>
-                        <a class="btn btn-danger btn-sm" id="task" href="/Tasks/Delete?id=@item.taskId">Delete</a>
+                        <button class="btn btn-primary btn-sm" id="task" href="/Tasks/Edit?id=@item.taskId">Edit</button>
+                        <button class="btn btn-danger btn-sm" id="task" href="/Tasks/Delete?id=@item.taskId">Delete</button>
                     </div>
                 </label>
                 <div class="content">
@@ -45,6 +45,19 @@
                             }
                         </li>
                     </ul>
+                </div>
+                <div class="overlay">
+                    <div class="popup-content">
+                        <div class="content-container">
+                            <h2 id="title">Delete Task</h2>
+                            <p id="question">Are you sure you want to permanently delete this task?</p>
+                            <p id="task-body"><strong>@item.taskBody</strong></p>
+                            <div class="popup-btns">
+                                <button class="btn-confirm">1</button>
+                                <button class="btn-close">2</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </li>
         }
