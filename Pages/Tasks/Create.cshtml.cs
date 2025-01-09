@@ -39,7 +39,7 @@ namespace WebApp.Pages.Tasks
                 CreatedOn = DateTime.UtcNow
             };
 
-            if (newTask.Body.Length == 0 || newTask.Body == null)
+            if (string.IsNullOrWhiteSpace(newTask.Body))
             {
                 errorMessage = "Task can not be empty";
                 return;
