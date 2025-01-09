@@ -37,6 +37,8 @@ namespace WebApp.Pages.Tasks
                 taskInfo.taskBody = t.Body;
                 taskInfo.taskDescription = t.Description;
                 taskInfo.taskId = Convert.ToString(t.Id);
+                taskInfo.taskCreatedOn = t.CreatedOn.ToString();
+                taskInfo.taskEditedOn = t.EditedOn.ToString();
             }
         }
 
@@ -52,6 +54,7 @@ namespace WebApp.Pages.Tasks
             {
                 newTask.Body = Request.Form["body"];
                 newTask.Description = Request.Form["description"];
+                newTask.EditedOn = DateTime.UtcNow;
                 context.SaveChanges();
                 successMessage = "Task updated succesfully";
                 return;

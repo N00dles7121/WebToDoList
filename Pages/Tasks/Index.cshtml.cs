@@ -35,7 +35,12 @@ namespace WebApp.Pages.Tasks
                     {
                         taskBody = t.Body,
                         taskId = Convert.ToString(t.Id),
-                        taskDescription = t.Description
+                        taskDescription = t.Description,
+                        taskCreatedOn = t.CreatedOn.ToLocalTime().ToString(),
+                        taskEditedOn =
+                                        (t.EditedOn is DateTime) ?
+                                        Convert.ToDateTime(t.EditedOn)
+                                        .ToLocalTime().ToString() : ""
                     });
                 }
             }
@@ -52,5 +57,6 @@ namespace WebApp.Pages.Tasks
         public string taskBody = null!;
         public string? taskDescription;
         public string taskCreatedOn = null!;
+        public string? taskEditedOn;
     }
 }

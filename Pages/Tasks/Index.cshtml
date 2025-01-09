@@ -30,6 +30,21 @@
                 </label>
                 <div class="content">
                     <p>@item.taskDescription</p>
+                    <ul class="date-container">
+                        <li id="created-on">
+                            Created On: @item.taskCreatedOn
+                        </li>
+                        <li id="edited-on">
+                            @if (item.taskEditedOn == "")
+                            {
+
+                            }
+                            else
+                            {
+                                <div>Last edited: @item.taskEditedOn</div>
+                            }
+                        </li>
+                    </ul>
                 </div>
             </li>
         }

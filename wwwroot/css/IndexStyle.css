@@ -1,3 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  overflow-y: scroll;
+}
+
 .Index {
   background: white;
 }
@@ -65,7 +74,7 @@ input[type="radio"] {
 
 .accordion input[type="radio"]:checked + .IndexLabel + .content {
   max-height: 400px;
-  padding: 10px 10px 20px;
+  padding: 10px 10px 0px;
 }
 
 .accordion input[type="radio"]:checked + .IndexLabel::before {
@@ -79,4 +88,28 @@ input[type="radio"] {
   right: 10px;
   bottom: 10px;
   left: auto;
+}
+
+.date-container {
+  border-top: gray dashed;
+  list-style: none;
+  display: flex;
+  padding: 0;
+  justify-content: space-between;
+  margin-top: 10%;
+}
+
+.date-container #created-on {
+  padding: 0;
+  margin: 0;
+  width: 25%;
+  box-shadow: none;
+}
+
+.date-container #edited-on {
+  padding: 0;
+  margin: 0;
+  width: 25%;
+  box-shadow: none;
+  text-align: end;
 }
