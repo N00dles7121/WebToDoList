@@ -32,18 +32,18 @@ namespace WebApp.Pages.Tasks
         {
             using ProgramContext context = new ProgramContext();
 
+            if (string.IsNullOrWhiteSpace(Request.Form["body"]))
+            {
+                errorMessage = "Task can not be empty";
+                return;
+            }
+
             TaskToDo newTask = new TaskToDo()
             {
                 Body = Request.Form["body"],
                 Description = Request.Form["description"],
                 CreatedOn = DateTime.UtcNow
             };
-
-            if (string.IsNullOrWhiteSpace(newTask.Body))
-            {
-                errorMessage = "Task can not be empty";
-                return;
-            }
 
             context.Tasks.Add(newTask);
             context.SaveChanges();
