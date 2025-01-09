@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.Extensions.Logging;
 using WebApp.Data;
@@ -23,6 +25,8 @@ namespace WebApp.Pages.Tasks
 
         public void OnGet()
         {
+            var errorMessage = new StringBuilder();
+
             try
             {
                 using ProgramContext context = new ProgramContext();
@@ -44,9 +48,16 @@ namespace WebApp.Pages.Tasks
                     });
                 }
             }
-            catch (System.Exception)
+            catch (SqlException ex)
             {
-
+                for (int i = 0; i < ex.Errors.Count; i++)
+                {
+                    errorMessage.Append("Index #" + i + "\n" +
+                        "Message: " + ex.Errors[i].Message + "\n" +
+                        "LineNumber: " + ex.Errors[i].LineNumber + "\n" +
+                        "Source: " + ex.Errors[i].Source + "\n" +
+                        "Procedure: " + ex.Errors[i].Procedure + "\n");
+                }
             }
         }
     }
@@ -55,8 +66,8 @@ namespace WebApp.Pages.Tasks
     {
         public string taskId = null!;
         public string taskBody = null!;
-        public string? taskDescription;
+        public string taskDescription;
         public string taskCreatedOn = null!;
-        public string? taskEditedOn;
+        public string taskEditedOn;
     }
 }

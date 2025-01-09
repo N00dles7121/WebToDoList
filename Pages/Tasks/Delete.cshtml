@@ -1,11 +1,13 @@
 @page
 @using WebApp.Data;
 @using WebApp.Models;
+@using Microsoft.Data.SqlClient;
 @{
     ViewData["Title"] = "Delete";
 }
 
 @{
+    var errorMessage = new System.Text.StringBuilder();
     try
     {
         ProgramContext context = new ProgramContext();
@@ -20,9 +22,16 @@
         }
         context.SaveChanges();
     }
-    catch
+    catch (SqlException ex)
     {
-
+        for (int i = 0; i < ex.Errors.Count; i++)
+        {
+            errorMessage.Append("Index #" + i + "\n" +
+            "Message: " + ex.Errors[i].Message + "\n" +
+            "LineNumber: " + ex.Errors[i].LineNumber + "\n" +
+            "Source: " + ex.Errors[i].Source + "\n" +
+            "Procedure: " + ex.Errors[i].Procedure + "\n");
+        }
     }
 
     Response.Redirect("/Tasks/Index");
