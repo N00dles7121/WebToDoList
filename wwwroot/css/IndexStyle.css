@@ -90,6 +90,10 @@ input[type="radio"] {
   left: auto;
 }
 
+.TaskBody {
+  max-width: 75%;
+}
+
 .date-container {
   border-top: gray dashed;
   list-style: none;
