@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.Extensions.Logging;
 using WebApp.Data;
+using WebApp.Models;
 
 namespace WebApp.Pages.Tasks
 {
@@ -21,32 +23,17 @@ namespace WebApp.Pages.Tasks
         //     _logger = logger;
         // }
 
-        public List<TaskInfo> taskList = new List<TaskInfo>();
+        public List<TaskToDo> taskList = new List<TaskToDo>();
 
-        public void OnGet()
+        public async Task OnGet()
         {
             var errorMessage = new StringBuilder();
 
             try
             {
                 using ProgramContext context = new ProgramContext();
-                var tasks = from a in context.Tasks
-                            select a;
 
-                foreach (var t in tasks)
-                {
-                    taskList.Add(new TaskInfo
-                    {
-                        taskBody = t.Body,
-                        taskId = Convert.ToString(t.Id),
-                        taskDescription = t.Description,
-                        taskCreatedOn = t.CreatedOn.ToLocalTime().ToString(),
-                        taskEditedOn =
-                                        (t.EditedOn is DateTime) ?
-                                        Convert.ToDateTime(t.EditedOn)
-                                        .ToLocalTime().ToString() : ""
-                    });
-                }
+                taskList = await context.Tasks.Select(t => t).ToListAsync();
             }
             catch (SqlException ex)
             {
@@ -60,14 +47,5 @@ namespace WebApp.Pages.Tasks
                 }
             }
         }
-    }
-
-    public class TaskInfo
-    {
-        public string taskId = null!;
-        public string taskBody = null!;
-        public string taskDescription;
-        public string taskCreatedOn = null!;
-        public string taskEditedOn;
     }
 }

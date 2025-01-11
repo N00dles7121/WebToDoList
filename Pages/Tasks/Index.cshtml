@@ -17,31 +17,31 @@
     <h2>All Tasks:</h2>
     <a class='btn btn-success btn-sm' href="/Tasks/Create">New</a>
     <ul class="accordion">
-        @foreach (var item in Model.taskList)
+        @foreach (var task in Model.taskList)
         {
             <li>
-                <input type="radio" name="accordion" id="@item.taskId">
-                <label for="@item.taskId" class="IndexLabel">
-                    <h3 class="TaskBody">@item.taskBody</h3>
+                <input type="radio" name="accordion" id="@task.Id">
+                <label for="@task.Id" class="IndexLabel">
+                    <h3 class="TaskBody">@task.Body</h3>
                     <div class="TaskButtons">
-                        <a class="btn btn-primary btn-sm" id="task" href="/Tasks/Edit?id=@item.taskId">Edit</a>
-                        <a class="btn btn-danger btn-sm" id="task" href="/Tasks/Delete?id=@item.taskId">Delete</a>
+                        <a class="btn btn-primary btn-sm" id="task" href="/Tasks/Edit?id=@task.Id">Edit</a>
+                        <a class="btn btn-danger btn-sm" id="task" href="/Tasks/Delete?id=@task.Id">Delete</a>
                     </div>
                 </label>
                 <div class="content">
-                    <p>@item.taskDescription</p>
+                    <p>@task.Description</p>
                     <ul class="date-container">
                         <li id="created-on">
-                            Created On: @item.taskCreatedOn
+                            Created On: @task.CreatedOn
                         </li>
                         <li id="edited-on">
-                            @if (item.taskEditedOn == "")
+                            @if (task.EditedOn.ToString() == "")
                             {
 
                             }
                             else
                             {
-                                <div>Last edited: @item.taskEditedOn</div>
+                                <div>Last edited: @task.EditedOn</div>
                             }
                         </li>
                     </ul>
