@@ -19,7 +19,6 @@ namespace WebApp.Pages.Tasks
         //     _logger = logger;
         // }
 
-        public TaskInfo taskInfo = new TaskInfo();
         public string errorMessage = "";
         public string successMessage = "";
 
@@ -28,7 +27,7 @@ namespace WebApp.Pages.Tasks
 
         }
 
-        public void OnPost()
+        public async Task OnPost()
         {
             using ProgramContext context = new ProgramContext();
 
@@ -45,8 +44,8 @@ namespace WebApp.Pages.Tasks
                 CreatedOn = DateTime.UtcNow
             };
 
-            context.Tasks.Add(newTask);
-            context.SaveChanges();
+            await context.Tasks.AddAsync(newTask);
+            await context.SaveChangesAsync();
 
             successMessage = "Task created succesfully";
         }
