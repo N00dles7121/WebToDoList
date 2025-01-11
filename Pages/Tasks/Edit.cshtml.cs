@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using WebApp.Data;
 using WebApp.Models;
@@ -21,47 +22,36 @@ namespace WebApp.Pages.Tasks
 
         public string errorMessage = "";
         public string successMessage = "";
-        public TaskInfo taskInfo = new TaskInfo();
+        public TaskToDo taskToEdit = new TaskToDo();
         ProgramContext context = new ProgramContext();
 
-        public void OnGet()
+        public async Task OnGet()
         {
             int.TryParse(Request.Query["id"], out int id);
 
-            var task = from t in context.Tasks
-                       where t.Id == id
-                       select t;
+            var task = await context.Tasks.FirstOrDefaultAsync(t => t.Id == id);
 
-            foreach (var t in task)
-            {
-                taskInfo.taskBody = t.Body;
-                taskInfo.taskDescription = t.Description;
-                taskInfo.taskId = Convert.ToString(t.Id);
-                taskInfo.taskCreatedOn = t.CreatedOn.ToString();
-                taskInfo.taskEditedOn = t.EditedOn.ToString();
-            }
+            taskToEdit = task;
         }
 
-        public void OnPost()
+        public async Task OnPost()
         {
             int.TryParse(Request.Query["id"], out int id);
 
-            var newTask = context.Tasks
-                          .Where(t => t.Id == id)
-                          .FirstOrDefault();
+            var newTask = await context.Tasks.FirstOrDefaultAsync(t => t.Id == id);
 
-            if (newTask is TaskToDo)
+            if (string.IsNullOrWhiteSpace(Request.Form["body"]))
             {
-                newTask.Body = Request.Form["body"];
-                newTask.Description = Request.Form["description"];
-                newTask.EditedOn = DateTime.UtcNow;
-                context.SaveChanges();
-                successMessage = "Task updated succesfully";
+                errorMessage = "Task can not be empty";
                 return;
             }
             else
             {
-                errorMessage = "Task can not be empty";
+                newTask.Body = Request.Form["body"];
+                newTask.Description = Request.Form["description"];
+                newTask.EditedOn = DateTime.UtcNow;
+                await context.SaveChangesAsync();
+                successMessage = "Task updated succesfully";
                 return;
             }
         }
