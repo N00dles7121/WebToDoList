@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualBasic;
 using WebApp.Data;
 using WebApp.Models;
 
@@ -21,6 +22,7 @@ namespace WebApp.Pages.Tasks
 
         public string errorMessage = "";
         public string successMessage = "";
+        ProgramContext context = new ProgramContext();
 
         public void OnGet()
         {
@@ -29,14 +31,23 @@ namespace WebApp.Pages.Tasks
 
         public async Task OnPost()
         {
-            using ProgramContext context = new ProgramContext();
-
             if (string.IsNullOrWhiteSpace(Request.Form["body"]))
             {
                 errorMessage = "Task can not be empty";
                 return;
             }
 
+            TaskToDo newTask = CreateNewTask();
+
+            await context.Tasks.AddAsync(newTask);
+
+            await context.SaveChangesAsync();
+
+            successMessage = "Task created succesfully";
+        }
+
+        private TaskToDo CreateNewTask()
+        {
             TaskToDo newTask = new TaskToDo()
             {
                 Body = Request.Form["body"],
@@ -44,10 +55,7 @@ namespace WebApp.Pages.Tasks
                 CreatedOn = DateTime.UtcNow
             };
 
-            await context.Tasks.AddAsync(newTask);
-            await context.SaveChangesAsync();
-
-            successMessage = "Task created succesfully";
+            return newTask;
         }
     }
 }
