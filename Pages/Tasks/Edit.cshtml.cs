@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -29,17 +30,18 @@ namespace WebApp.Pages.Tasks
         {
             int.TryParse(Request.Query["id"], out int id);
 
-            var task = await context.Tasks.FirstOrDefaultAsync(t => t.Id == id);
-
-            taskToEdit = task;
+            taskToEdit = await context.Tasks.FirstOrDefaultAsync(t => t.Id == id);
         }
 
         public async Task OnPost()
         {
             int.TryParse(Request.Query["id"], out int id);
 
-            var newTask = await context.Tasks.FirstOrDefaultAsync(t => t.Id == id);
+            await EditTaskAsync(await context.Tasks.FirstOrDefaultAsync(t => t.Id == id));
+        }
 
+        private async Task EditTaskAsync(TaskToDo task)
+        {
             if (string.IsNullOrWhiteSpace(Request.Form["body"]))
             {
                 errorMessage = "Task can not be empty";
@@ -47,12 +49,11 @@ namespace WebApp.Pages.Tasks
             }
             else
             {
-                newTask.Body = Request.Form["body"];
-                newTask.Description = Request.Form["description"];
-                newTask.EditedOn = DateTime.UtcNow;
+                task.Body = Request.Form["body"];
+                task.Description = Request.Form["description"];
+                task.EditedOn = DateTime.UtcNow;
                 await context.SaveChangesAsync();
                 successMessage = "Task updated succesfully";
-                return;
             }
         }
     }
