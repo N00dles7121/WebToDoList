@@ -15,7 +15,12 @@ namespace WebApp.Pages.Tasks
         // }
 
         StringBuilder errorMessage = new StringBuilder();
-        ProgramContext context = new ProgramContext();
+        private readonly ProgramContext _context;
+
+        public Delete(ProgramContext context)
+        {
+            _context = context;
+        }
 
         public async Task OnGet()
         {
@@ -30,10 +35,10 @@ namespace WebApp.Pages.Tasks
         {
             try
             {
-                var task = context.Tasks.FirstOrDefault(t => t.Id == id);
+                var task = _context.Tasks.FirstOrDefault(t => t.Id == id);
 
-                context.Tasks.Remove(task);
-                await context.SaveChangesAsync();
+                _context.Tasks.Remove(task);
+                await _context.SaveChangesAsync();
             }
             catch (SqlException ex)
             {

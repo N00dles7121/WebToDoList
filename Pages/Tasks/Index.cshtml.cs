@@ -17,6 +17,12 @@ namespace WebApp.Pages.Tasks
         // }
 
         public List<TaskToDo> taskList = new List<TaskToDo>();
+        private readonly ProgramContext _context;
+
+        public Index(ProgramContext context)
+        {
+            _context = context;
+        }
 
         public async Task OnGet()
         {
@@ -24,9 +30,8 @@ namespace WebApp.Pages.Tasks
 
             try
             {
-                using ProgramContext context = new ProgramContext();
 
-                taskList = await context.Tasks.Select(t => t).ToListAsync();
+                taskList = await _context.Tasks.Select(t => t).ToListAsync();
             }
             catch (SqlException ex)
             {

@@ -15,7 +15,12 @@ namespace WebApp.Pages.Tasks
 
         public string errorMessage = "";
         public string successMessage = "";
-        ProgramContext context = new ProgramContext();
+        private readonly ProgramContext _context;
+
+        public Create(ProgramContext context)
+        {
+            _context = context;
+        }
 
         public void OnGet()
         {
@@ -32,9 +37,9 @@ namespace WebApp.Pages.Tasks
 
             TaskToDo newTask = CreateNewTask();
 
-            await context.Tasks.AddAsync(newTask);
+            await _context.Tasks.AddAsync(newTask);
 
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             successMessage = "Task created succesfully";
         }

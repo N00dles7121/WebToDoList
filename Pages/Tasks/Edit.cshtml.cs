@@ -17,20 +17,25 @@ namespace WebApp.Pages.Tasks
         public string errorMessage = "";
         public string successMessage = "";
         public TaskToDo taskToEdit = new TaskToDo();
-        ProgramContext context = new ProgramContext();
+        private readonly ProgramContext _context;
+
+        public Edit(ProgramContext context)
+        {
+            _context = context;
+        }
 
         public async Task OnGet()
         {
             int.TryParse(Request.Query["id"], out int id);
 
-            taskToEdit = await context.Tasks.FirstOrDefaultAsync(t => t.Id == id);
+            taskToEdit = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id);
         }
 
         public async Task OnPost()
         {
             int.TryParse(Request.Query["id"], out int id);
 
-            await EditTaskAsync(await context.Tasks.FirstOrDefaultAsync(t => t.Id == id));
+            await EditTaskAsync(await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id));
         }
 
         private async Task EditTaskAsync(TaskToDo task)
@@ -45,7 +50,7 @@ namespace WebApp.Pages.Tasks
                 task.Body = Request.Form["body"];
                 task.Description = Request.Form["description"];
                 task.EditedOn = DateTime.UtcNow;
-                await context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
                 successMessage = "Task updated succesfully";
             }
         }
